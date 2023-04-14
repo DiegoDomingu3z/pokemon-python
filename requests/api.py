@@ -58,7 +58,6 @@ def runRequest(offset):
     results = data['results']
     for poki in results:
         allPokemon.append(poki['name'])
-    print(allPokemon)
     pokemon = [inquirer.List('Select',
                              message="select a pokimon",
                              choices=allPokemon),
