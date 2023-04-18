@@ -1,19 +1,19 @@
 import os
 import requests
-from dotenv import load_dotenv
+
 import pprint as pp
 import inquirer
 from pokiApi import *
-load_dotenv()
 offset = 0
 page = 0
 url = 'https://pokeapi.co/api/v2/pokemon/?offset='
 choices = ['next -->', '<-- prev', '[exit]']
 fightList = []
+allPokemon = []
 
 
 def clearConsole():
-    os.system('cls')
+    os.system('clear')
 
 
 def IntroduceUser():
@@ -76,7 +76,7 @@ def nextSet():
 
 def runRequest(offset):
     count = 0
-    allPokemon = []
+    global allPokemon
     global fightList
     res = requests.get(url + str(offset) + '&limit=10')
     data = res.json()
@@ -86,10 +86,10 @@ def runRequest(offset):
         allPokemon.append(poki['name'])
     for choice in choices:
         allPokemon.append(choice)
-        pokemon = [inquirer.List('Select',
-                                 message="select a pokimon",
-                                 choices=allPokemon),
-                   ]
+    pokemon = [inquirer.List('Select',
+                             message="select a pokimon",
+                             choices=allPokemon),
+               ]
     while count < 2:
 
         input = inquirer.prompt(pokemon)
@@ -101,6 +101,7 @@ def runRequest(offset):
         elif (input['Select'] == '[exit]'):
             clearConsole()
             print('GOODBYE')
+            return
         else:
             print(selected)
             fightList.append(selected)
